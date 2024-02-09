@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2>Register</h2>
+    <form method="POST" action="{{ url_for('register') }}" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <div class="form-group">
+            <label for="profession">Profession</label>
+            <input type="text" name="profession" id="profession" required>
+        </div>
+        <div class="form-group">
+            <label for="contact">Contact</label>
+            <input type="email" name="contact" id="contact" required>
+        </div>
+        <div class="form-group">
+            <label for="profile_picture">Profile Picture</label>
+            <input type="file" name="profile_picture" accept="image/*" required>
+        </div>
+        <div class="form-group">
+            <label for="educational_background">Educational Background</label>
+            <textarea name="educational_background" id="educational_background" required></textarea>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+{% endblock %}
+
+

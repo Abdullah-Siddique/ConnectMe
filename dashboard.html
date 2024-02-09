@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2>Welcome, {{ username }}</h2>
+    {% for user_entry in users %}
+        <div>
+            <!-- Display user profile details -->
+            <p><strong>Name:</strong> {{ user_entry.name }}</p>
+            <p><strong>Profession:</strong> {{ user_entry.profession }}</p>
+            <p><strong>Contact:</strong> {{ user_entry.contact }}</p>
+
+            <!-- Form to delete the profile -->
+            <form method="POST" action="{{ url_for('delete_profile', user_id=user_entry.id) }}">
+                <button type="submit">Delete Profile</button>
+            </form>
+
+            <hr>
+        </div>
+    {% endfor %}
+    <p><a href="{{ url_for('professions') }}">View All Professions</a></p>
+{% endblock %}
+
+

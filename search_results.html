@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h2>Search Results for '{{ profession }}':</h2>
+    <ul>
+        {% for user in users %}
+            <li>
+                Name: {{ user.name }}<br>
+                Profession: {{ user.profession }}<br>
+                Contact: {{ user.contact }}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('professions') }}">Back to Professions</a>
+{% endblock %}
+

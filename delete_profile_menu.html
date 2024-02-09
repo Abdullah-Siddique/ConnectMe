@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2>Delete Profile Menu</h2>
+    <ul>
+        {% for user in users %}
+            <li>
+                Name: {{ user.name }} | Profession : {{ user.profession }}
+                <form method="POST" action="{{ url_for('delete_profile', user_id=user.id) }}">
+                    <button type="submit">Delete Profile</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

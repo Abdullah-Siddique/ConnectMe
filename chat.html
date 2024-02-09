@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Interface</title>
+    <style>
+        /* Basic styling for the chat interface */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .chat-container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .message {
+            margin: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background-color: #e0e0e0;
+            max-width: 70%;
+        }
+
+        .user-message {
+            background-color: #DCF8C6;
+            align-self: flex-end;
+        }
+
+        .sender {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .message-time {
+            font-size: 0.8em;
+            color: #777;
+        }
+
+        .input-area {
+            margin-top: 20px;
+            display: flex;
+        }
+
+        .input-area input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+
+        .input-area button {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Chat messages -->
+        <div class="chat-messages">
+            <div class="message user-message">
+                <span class="sender">You</span>
+                <span class="message-time">12:00 PM</span>
+                <p>Hello!</p>
+            </div>
+
+            <div class="message">
+                <span class="sender">Friend</span>
+                <span class="message-time">12:01 PM</span>
+                <p>Hi there!</p>
+            </div>
+
+            <!-- Other chat messages would go here -->
+        </div>
+
+        <!-- Message input area -->
+        <div class="input-area">
+            <input type="text" placeholder="Type a message...">
+            <button>Send</button>
+        </div>
+    </div>
+</body>
+</html>
+

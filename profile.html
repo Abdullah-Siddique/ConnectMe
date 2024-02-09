@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2>{{ user.name }}'s Profile</h2>
+    <img src="{{ user.profile_picture }}" alt="Profile Picture">
+    <p><strong>Profession:</strong> {{ user.profession }}</p>
+    <p><strong>Contact:</strong> {{ user.contact }}</p>
+    <p><strong>Educational Background:</strong> {{ user.educational_background }}</p>
+
+    <!-- Basic Chat Interface -->
+    <h3>Chat Interface</h3>
+    <div class="chat-container">
+        <!-- Chat messages -->
+        <div class="chat-messages">
+            <!-- Chat messages will be displayed here -->
+        </div>
+
+        <!-- Message input area -->
+        <div class="input-area">
+            <input type="text" placeholder="Type a message...">
+            <button>Send</button>
+        </div>
+    </div>
+{% endblock %}
