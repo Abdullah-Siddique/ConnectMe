@@ -1,11 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+# app.py
+
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+import os
 import secrets
-from flask import flash
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///connectme.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = secrets.token_hex(16)
+app.config['UPLOAD_FOLDER'] = 'uploads'  # Folder to store uploaded profile pictures
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -16,7 +21,7 @@ class User(db.Model):
     contact = db.Column(db.String(100), nullable=False)
     profile_picture = db.Column(db.String(255))  # Adjust the length as needed
     educational_background = db.Column(db.Text)   # Or specify the appropriate type
-    chat_info = db.Column(db.String(255))  # For storing chat/mail info
+    chat_info = db.Column(db.String(255))  # For storing chat info
 
 # Create tables if they don't exist
 with app.app_context():
@@ -34,24 +39,20 @@ def register():
         profession = request.form['profession']
         contact = request.form['contact']
         educational_background = request.form['educational_background']
-        chat_info = request.form['chat_info']
+        chat_info = ''
 
-        if not all([name, password, profession, contact, educational_background, chat_info]):
+        if not all([name, password, profession, contact, educational_background]):
             flash('Please fill in all fields.')
             return redirect(url_for('register'))  # Redirect back to the registration page
 
-        if 'profile_picture' not in request.files:
-            flash('Profile picture is required.')
-            return redirect(url_for('register'))
-
-        profile_picture = request.files['profile_picture']
-
-        if profile_picture.filename == '':
-            flash('No selected file')
-            return redirect(url_for('register'))
+        if 'profile_picture' in request.files:
+            profile_picture = request.files['profile_picture']
+            if profile_picture.filename != '':
+                profile_picture_filename = secure_filename(profile_picture.filename)
+                profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], profile_picture_filename))
 
         new_user = User(name=name, password=password, profession=profession, contact=contact,
-                        profile_picture=profile_picture.filename, educational_background=educational_background,
+                        profile_picture=profile_picture_filename, educational_background=educational_background,
                         chat_info=chat_info)
         db.session.add(new_user)
         db.session.commit()
@@ -59,7 +60,6 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -138,5 +138,15 @@ def delete_profile_menu():
     all_users = User.query.all()
     return render_template('delete_profile_menu.html', users=all_users)
 
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    if request.method == 'POST':
+        data = request.json
+        recipient_id = data.get('recipient_id')
+        message = data.get('message')
+        # Code to send message to the recipient user and update chat_info in the database
+        return jsonify({'success': True})  # Placeholder response
+
 if __name__ == '__main__':
     app.run(debug=True)
+
