@@ -71,27 +71,76 @@
     <div class="chat-container">
         <!-- Chat messages -->
         <div class="chat-messages">
-            <div class="message user-message">
-                <span class="sender">You</span>
-                <span class="message-time">12:00 PM</span>
-                <p>Hello!</p>
-            </div>
-
-            <div class="message">
-                <span class="sender">Friend</span>
-                <span class="message-time">12:01 PM</span>
-                <p>Hi there!</p>
-            </div>
-
-            <!-- Other chat messages would go here -->
+            <!-- Messages will be loaded dynamically using JavaScript -->
         </div>
-
         <!-- Message input area -->
         <div class="input-area">
-            <input type="text" placeholder="Type a message...">
-            <button>Send</button>
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
         </div>
     </div>
+
+    <!-- JavaScript for handling chat -->
+    <script>
+        function sendMessage() {
+            var message = document.getElementById('message-input').value;
+            var recipientId = /* Retrieve recipient ID */
+            fetch('/send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ recipient_id: recipientId, message: message }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    appendMessage('You', message); // Update chat interface with the sent message
+                    document.getElementById('message-input').value = ''; // Clear message input field
+                } else {
+                    alert('Failed to send message.'); // Handle error
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function appendMessage(sender, message) {
+            var chatMessages = document.querySelector('.chat-messages');
+            var messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            if (sender === 'You') {
+                messageDiv.classList.add('user-message');
+            }
+            var senderSpan = document.createElement('span');
+            senderSpan.className = 'sender';
+            senderSpan.textContent = sender;
+            var timeSpan = document.createElement('span');
+            timeSpan.className = 'message-time';
+            timeSpan.textContent = getTime(); // Call getTime() to get current time
+            var messagePara = document.createElement('p');
+            messagePara.textContent = message;
+            messageDiv.appendChild(senderSpan);
+            messageDiv.appendChild(timeSpan);
+            messageDiv.appendChild(messagePara);
+            chatMessages.appendChild(messageDiv);
+        }
+
+        // Function to get current time
+        function getTime() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var strTime = hours + ':' + minutes + ' ' + ampm;
+            return strTime;
+        }
+    </script>
 </body>
 </html>
+
 
